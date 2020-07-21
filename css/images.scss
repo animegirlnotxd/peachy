@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #E4E4E8;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #1F202C;
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    overflow-x: hidden; // remove horizontal scroll caused by the sidenav
+}
+
+/*
+#info {
+        display: inline-block;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+*/
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    #slider {
+        display: inline-block;
+        padding: 3px 3px 3px 3px;
+        background-color: #1f202c93;
+        border-radius: 0 0 5px 0;
+    }
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    //transform: translateX(-50%);
+    background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);         
+    text-align: center;
+    padding: 3px 10px 3px 10px;
+    width: 150px;
+    border-radius: 0 0 0 5px;
+    font-size: 14px;
+}
+
+// source: https://css-tricks.com/seamless-responsive-photo-grid/
+#content {
+    line-height: 0;
+    column-count: 3;
+    column-gap: 10px;
+    column-fill: auto;
+    text-align: center;
+
+    img, video {
+        display: block;
+        max-width: 100%;
+        max-height: 100vh;
+        margin: 0 auto 10px auto;
+    }
+
+    video {
+        outline: none;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #393b52;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #42455f; 
+}

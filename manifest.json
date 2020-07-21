@@ -1,0 +1,23 @@
+{
+   "name": "Peachy",
+   "description": "Easily view a page's posts in a new tab",
+   "browser_action": {
+      "default_popup": "html/popup.html"
+   },
+   "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["js/content.js"]
+      }
+   ],
+   "background": {
+      "scripts": ["js/jquery-3.5.1.js", "js/background.js"]
+    },
+   "manifest_version": 2,
+   "version": "1.0",
+   "permissions": [
+      "storage",
+      "contextMenus"
+  ],
+  "web_accessible_resources": ["html/images.html"]
+}
