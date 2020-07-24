@@ -7,13 +7,15 @@ chrome.contextMenus.create({"title": "Open", "documentUrlPatterns": contextMenuS
 
 function menuItemClick(changeInfo, tab) {
 	
-	chrome.tabs.sendMessage(tab.id, {action: 'menuItemClicked', tabTitle: tab.title.toLowerCase()}, function(response) {
-		sendImages(tab.id, response, tab.title.toLowerCase());
-	});
+	chrome.tabs.sendMessage(
+        tab.id,
+        {action: 'menuItemClicked', tabTitle: tab.title.toLowerCase()},
+        function(response) {
+            sendImages(tab.id, response, tab.title.toLowerCase());
+    });
 }
 
 function sendImages(tabId, response, tabTitle) {
-    
     let urls = response.urls;
 	if (urls.length == 0) {
 		alert("No Images Found");
