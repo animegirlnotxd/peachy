@@ -70,39 +70,41 @@ function getImage(url, post) {
 
 	if((urlExtension == "mp4")
 	|| (urlExtension == "webm")) {
-		let video = document.createElement('video');
+		const video = document.createElement('video');
 		video.controls = true;
 		video.loop = true;
 		video.muted = true;
 
-		let source = document.createElement('source');
+		const source = document.createElement('source');
 		source.setAttribute('src', url);
 
 		video.appendChild(source);
 
-		let a = document.createElement('a');
+		const a = document.createElement('a');
 		a.setAttribute('href', post);
+		a.setAttribute('target', "_blank");
 
-		let open = document.createTextNode("open");
+		const open = document.createTextNode("open");
 		a.appendChild(open);
 
-		let article = document.createElement('article');
+		const article = document.createElement('article');
 		article.appendChild(video);
 		article.appendChild(a);
 
 		content = article;
 	}
 	else {
-		let img = document.createElement('img');
+		const img = document.createElement('img');
 		img.setAttribute('src', url);
 		
-		let a = document.createElement('a');
+		const a = document.createElement('a');
 		a.setAttribute('href', post);
+		a.setAttribute('target', "_blank");
 
-		let open = document.createTextNode("open");
+		const open = document.createTextNode("open");
 		a.appendChild(open);
 
-		let article = document.createElement('article');
+		const article = document.createElement('article');
 		article.appendChild(img);
 		article.appendChild(a);
 

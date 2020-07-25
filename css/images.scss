@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-a {
-    text-decoration: none;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -16,6 +12,10 @@ body {
     background-color: #1F202C;
     width: calc(100% - 20px);
     margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
 }
 
 /*
@@ -43,7 +43,6 @@ nav {
     position: absolute;
     top: 0;
     right: 10px;
-    //transform: translateX(-50%);
     background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);         
     text-align: center;
     padding: 3px 10px 3px 10px;
@@ -75,11 +74,20 @@ nav {
         }
 
         a {
+            opacity: 0;
+            z-index: 1;
             position: absolute;
             top: 0;
             right: 0;
             padding: 10px;
             background-color: #1f202c56;
+            transition: opacity 0.3s;
+        }
+    }
+
+    article:hover {
+        a {
+            opacity: 1;
         }
     }
 }

@@ -1,8 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-a {
-  text-decoration: none;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -16,6 +12,10 @@ body {
   background-color: #1F202C;
   width: calc(100% - 20px);
   margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
 }
 
 /*
@@ -79,11 +79,19 @@ nav {
 }
 
 #content article a {
+  opacity: 0;
+  z-index: 1;
   position: absolute;
   top: 0;
   right: 0;
   padding: 10px;
   background-color: #1f202c56;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+#content article:hover a {
+  opacity: 1;
 }
 
 ::-webkit-scrollbar {
