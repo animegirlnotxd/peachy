@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+a {
+    text-decoration: none;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +16,6 @@ body {
     background-color: #1F202C;
     width: calc(100% - 20px);
     margin: 0 auto;
-    overflow-x: hidden; // remove horizontal scroll caused by the sidenav
 }
 
 /*
@@ -33,7 +36,6 @@ header {
         display: inline-block;
         padding: 3px 3px 3px 3px;
         background-color: #1f202c93;
-        border-radius: 0 0 5px 0;
     }
 }
 
@@ -46,7 +48,6 @@ nav {
     text-align: center;
     padding: 3px 10px 3px 10px;
     width: 150px;
-    border-radius: 0 0 0 5px;
     font-size: 14px;
 }
 
@@ -58,15 +59,28 @@ nav {
     column-fill: auto;
     text-align: center;
 
-    img, video {
+    article {
+        display: inline-block;
+        position: relative;
+
+        img, video {
         display: block;
         max-width: 100%;
         max-height: 100vh;
         margin: 0 auto 10px auto;
-    }
+        }
 
-    video {
-        outline: none;
+        video {
+            outline: none;
+        }
+
+        a {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            background-color: #1f202c56;
+        }
     }
 }
 

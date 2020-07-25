@@ -25,52 +25,43 @@ function updateValue(e) {
 function populateImagesPage(urls, tabTitle) {
 	document.getElementById('image-count').innerText = urls[0].length + " images ";
 
-	if(isKonachan(tabTitle)) {
-		let promises = [];
-		// console.log(urls);
-		urls[0].forEach(url => {
-			promises.push(
-				fetch(url)
-				.then((response) => response.json()));
-		});
-
-		Promise.all(promises).then((values) => {
-			for (let i = 0; i < values.length; i++) {
-				document.getElementById('content').append(
-					getImage(values[i].posts[0]['sample_url'], urls[1][i])
-					);
-			}
-		});
+	switch (determineSite(tabTitle)) {
+		case "danbooru":
+			danbooru(urls);
+			break;
+		case "yandere":
+			yandere(urls);
+			break;
+		case "konachan":
+			konachan(urls);
+				break;
+		default:
+			break;
 	}
-	else {
-		for (let i = 0; i < values.length; i++) {
-			document.getElementById('content').append(
-				getImage(urls[0][i], urls[1][i])
-				);
-		}
+}
+
+function determineSite(tabTitle) {
+	if(tabTitle.includes("danbooru")) {
+		return "danbooru";
+	}
+	else if(tabTitle.includes("yande")) {
+		return "yandere";
+	}
+	else if(tabTitle.includes("konachan")) {
+		return "konachan";
 	}
 }
 
 function applyTitle(tabTitle) {
-
-	// title cleanup
-	if(tabTitle.includes("danbooru")) {
+	if(determineSite(tabTitle) == "danbooru") {
 		document.title = "Results from danbooru";
 	}
-	else if(tabTitle.includes("yande")) {
+	else if(determineSite(tabTitle) == "yandere") {
 		document.title = "Results from yandere";
 	}
-	else if(tabTitle.includes("konachan")) {
+	else if(determineSite(tabTitle) == "konachan") {
 		document.title = "Results from konachan";
 	}
-}
-
-function isKonachan(tabTitle) {
-	if(tabTitle.includes("konachan")) {
-		return true;
-	}
-	
-	return false;
 }
 
 function getImage(url, post) {
@@ -91,20 +82,65 @@ function getImage(url, post) {
 
 		let a = document.createElement('a');
 		a.setAttribute('href', post);
-		a.appendChild(video); 
 
-		content = a;
+		let open = document.createTextNode("open");
+		a.appendChild(open);
+
+		let article = document.createElement('article');
+		article.appendChild(video);
+		article.appendChild(a);
+
+		content = article;
 	}
 	else {
 		let img = document.createElement('img');
 		img.setAttribute('src', url);
-
+		
 		let a = document.createElement('a');
 		a.setAttribute('href', post);
-		a.appendChild(img);
-		
-		content = a;
+
+		let open = document.createTextNode("open");
+		a.appendChild(open);
+
+		let article = document.createElement('article');
+		article.appendChild(img);
+		article.appendChild(a);
+
+		content = article;
 	}
 
 	return content;
+}
+
+function danbooru(urls) {
+	for (let i = 0; i < urls[0].length; i++) {
+		document.getElementById('content').append(
+			getImage(urls[0][i], urls[1][i])
+		);
+	}
+}
+
+function yandere(urls) {
+	for (let i = 0; i < urls[0].length; i++) {
+		document.getElementById('content').append(
+			getImage(urls[0][i], urls[1][i])
+		);
+	}
+}
+
+function konachan(urls) {
+	let promises = [];
+	urls[0].forEach(url => {
+		promises.push(
+			fetch(url)
+			.then((response) => response.json()));
+	});
+
+	Promise.all(promises).then((values) => {
+		for (let i = 0; i < values.length; i++) {
+			document.getElementById('content').append(
+				getImage(values[i].posts[0]['sample_url'], urls[1][i])
+			);
+		}
+	});
 }

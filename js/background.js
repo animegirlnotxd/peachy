@@ -23,7 +23,7 @@ function sendImages(tabId, response, tabTitle) {
 	else {
         chrome.tabs.create({url: chrome.extension.getURL('html/images.html')}, function(tab) {
             chrome.tabs.executeScript(tab.id, {file:"js/images.js"}, function() {
-                chrome.tabs.sendMessage(tab.id, {urls: urls, tabTitle: tabTitle}, function() {});
+                chrome.tabs.sendMessage(tab.id, {urls: urls, tabTitle: tabTitle});
             });
         });
     }

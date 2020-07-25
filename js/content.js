@@ -15,42 +15,49 @@ chrome.runtime.onMessage.addListener(function(request, sender, respond) {
 });
 
 function danbooru() {
-    let urlImages = [];
-
     // VIDEOS          : data-large-file-url
     // MEDIUM SIZED IMG: data-large-file-url
     // FULL SIZED IMG  : data-file-url
 
-    let articles = document.querySelectorAll("article[data-large-file-url]");
-
+    let articles = document.querySelectorAll("article");
+    
+    let links = [];
+    let posts = [];
+    
     articles.forEach(article => {
-        urlImages.push(article.attributes["data-large-file-url"].value);
+        links.push(article.attributes["data-large-file-url"].value);
+
+        const id = article.attributes["data-id"].value;
+        posts.push(`https://danbooru.donmai.us/posts/${id}`);
     });
 
-    return urlImages;
+    return [links, posts];
 }
 
 function yandere() {
-    let urlImages = [];
-    
-    // FULL SIZED IMG  : directlink OR largeimg
-    // MEDIUM SIZED IMG: data-file-url
-    const links = document.querySelectorAll("a[class~='largeimg']");
-    links.forEach(link => {
-        urlImages.push(link.attributes["href"].value);
-    });
-    
-    return urlImages;
+    let links = [];
+    let posts = [];
+
+    const anchors = document.querySelectorAll("a[class~='largeimg']");
+    const lists = document.querySelectorAll("li[id^='p']");
+
+    for (let i = 0; i < anchors.length; i++) {
+        links.push(anchors[i].attributes["href"].value);
+
+        const id = lists[i].attributes["id"].value;
+        posts.push(`https://yande.re/post/show/${id.substr(1)}`);
+    }
+
+    return [links, posts];
 }
 
 function konachan() {
-    let liNodes = document.querySelectorAll("li[id^='p']");
+    let lists = document.querySelectorAll("li[id^='p']");
     let apiLinks = [];
     let posts = [];
     
-
-    liNodes.forEach(liNode => {
-        const id = liNode.attributes["id"].value;
+    lists.forEach(list => {
+        const id = list.attributes["id"].value;
         apiLinks.push(`https://konachan.com/post.json?tags=id:${id.substr(1)}&api_version=2`);
         posts.push(`https://konachan.com/post/show/${id.substr(1)}`);
     });
