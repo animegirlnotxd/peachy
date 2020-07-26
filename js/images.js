@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(function(request) {
 });
 
 document.getElementById('column-count').addEventListener('input', updateValue);
-window.addEventListener('load', () => {	
+window.addEventListener('DOMContentLoaded', () => {
 	/*
 	if(urls == undefined) {
 		$("#info").html("Either this page wasn't opened through the normal use of the extension;<br>or a window reload occured and it cleared the fetched images.");
@@ -127,7 +127,13 @@ function getImage(url, post, id) {
 		a.setAttribute('target', "_blank");
 
 		const underlay = document.createElement('a');
-		underlay.setAttribute('href', `#${id}`);
+		underlay.setAttribute('data-href', `#${id}`);
+
+		// source: https://stackoverflow.com/a/63095737/13978779
+		underlay.addEventListener("click", e => {
+			window.location.href = underlay.dataset.href;
+		});
+
 		underlay.appendChild(img);
 		
 		const overlay = document.createElement('a');
