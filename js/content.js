@@ -19,48 +19,55 @@ function danbooru() {
     // MEDIUM SIZED IMG: data-large-file-url
     // FULL SIZED IMG  : data-file-url
 
-    let articles = document.querySelectorAll("article");
+    let articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
     
-    let links = [];
-    let posts = [];
+    const images = [];
+    const posts = [];
+    const ids = [];
     
     articles.forEach(article => {
-        links.push(article.attributes["data-large-file-url"].value);
-
         const id = article.attributes["data-id"].value;
+
+        images.push(article.attributes["data-large-file-url"].value);
         posts.push(`https://danbooru.donmai.us/posts/${id}`);
+        ids.push(id);
     });
 
-    return [links, posts];
+    return [images, posts, ids];
 }
 
 function yandere() {
-    let links = [];
-    let posts = [];
+    const images = [];
+    const posts = [];
+    const ids = [];
 
     const anchors = document.querySelectorAll("a[class~='largeimg']");
-    const lists = document.querySelectorAll("li[id^='p']");
+    const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
 
     for (let i = 0; i < anchors.length; i++) {
-        links.push(anchors[i].attributes["href"].value);
-
         const id = lists[i].attributes["id"].value;
+
+        images.push(anchors[i].attributes["href"].value);
         posts.push(`https://yande.re/post/show/${id.substr(1)}`);
+        ids.push(id);
     }
 
-    return [links, posts];
+    return [images, posts, ids];
 }
 
 function konachan() {
-    let lists = document.querySelectorAll("li[id^='p']");
-    let apiLinks = [];
-    let posts = [];
+    const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
+    const apiLinks = [];
+    const posts = [];
+    const ids = [];
     
     lists.forEach(list => {
-        const id = list.attributes["id"].value;
-        apiLinks.push(`https://konachan.com/post.json?tags=id:${id.substr(1)}&api_version=2`);
-        posts.push(`https://konachan.com/post/show/${id.substr(1)}`);
+        const id = list.attributes["id"].value.substr(1);
+
+        apiLinks.push(`https://konachan.com/post.json?tags=id:${id}&api_version=2`);
+        posts.push(`https://konachan.com/post/show/${id}`);
+        ids.push(id);
     });
 
-    return [apiLinks, posts];
+    return [apiLinks, posts, ids];
 }

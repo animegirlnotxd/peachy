@@ -1,6 +1,11 @@
 {
-   "name": "Peachy",
-   "description": "Easily view a page's posts in a new tab",
+   "name": "Booru Gallery",
+   "version": "1.0.0",
+   "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
+   "manifest_version": 2,
+   "permissions": [
+      "contextMenus"
+  ],
    "browser_action": {
       "default_popup": "html/popup.html"
    },
@@ -15,12 +20,7 @@
    ],
    "background": {
       "scripts": ["js/background.js"]
-    },
-   "manifest_version": 2,
-   "version": "1.0",
-   "permissions": [
-      "storage",
-      "contextMenus"
-  ],
+   },
+   
   "web_accessible_resources": ["html/images.html"]
 }

@@ -16,8 +16,8 @@ function menuItemClick(changeInfo, tab) {
 }
 
 function sendImages(tabId, response, tabTitle) {
-    let urls = response.urls;
-	if (urls.length == 0) {
+    const urls = response.urls;
+	if (urls[0].length == 0) {
 		alert("No Images Found");
     }
 	else {

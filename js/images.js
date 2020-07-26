@@ -64,7 +64,7 @@ function applyTitle(tabTitle) {
 	}
 }
 
-function getImage(url, post) {
+function getImage(url, post, id) {
 	let content;
 	let urlExtension = url.split('.').pop();
 
@@ -75,20 +75,41 @@ function getImage(url, post) {
 		video.loop = true;
 		video.muted = true;
 
+		const video2 = document.createElement('video');
+		video2.controls = true;
+		video2.loop = true;
+		video2.muted = true;
+
 		const source = document.createElement('source');
 		source.setAttribute('src', url);
 
+		const source2 = document.createElement('source');
+		source2.setAttribute('src', url);
+
 		video.appendChild(source);
+		video2.appendChild(source2);
 
 		const a = document.createElement('a');
 		a.setAttribute('href', post);
+		a.setAttribute('id', "open");
 		a.setAttribute('target', "_blank");
+
+		const underlay = document.createElement('a');
+		underlay.setAttribute('href', `#${id}`);
+		underlay.appendChild(video);
+		
+		const overlay = document.createElement('a');
+		overlay.setAttribute('href', "#_");
+		overlay.setAttribute('class', "overlay");
+		overlay.setAttribute('id', id);
+		overlay.appendChild(video2);
 
 		const open = document.createTextNode("open");
 		a.appendChild(open);
 
 		const article = document.createElement('article');
-		article.appendChild(video);
+		article.appendChild(underlay);
+		article.appendChild(overlay);
 		article.appendChild(a);
 
 		content = article;
@@ -97,15 +118,31 @@ function getImage(url, post) {
 		const img = document.createElement('img');
 		img.setAttribute('src', url);
 		
+		const img2 = document.createElement('img');
+		img2.setAttribute('src', url);
+
 		const a = document.createElement('a');
 		a.setAttribute('href', post);
+		a.setAttribute('id', "open");
 		a.setAttribute('target', "_blank");
 
+		const underlay = document.createElement('a');
+		underlay.setAttribute('href', `#${id}`);
+		underlay.appendChild(img);
+		
+		const overlay = document.createElement('a');
+		overlay.setAttribute('href', "#_");
+		overlay.setAttribute('class', "overlay");
+		overlay.setAttribute('id', id);
+		overlay.appendChild(img2);
+
 		const open = document.createTextNode("open");
+		
 		a.appendChild(open);
 
 		const article = document.createElement('article');
-		article.appendChild(img);
+		article.appendChild(underlay);
+		article.appendChild(overlay);
 		article.appendChild(a);
 
 		content = article;
@@ -115,9 +152,10 @@ function getImage(url, post) {
 }
 
 function danbooru(urls) {
+	console.log(urls);
 	for (let i = 0; i < urls[0].length; i++) {
 		document.getElementById('content').append(
-			getImage(urls[0][i], urls[1][i])
+			getImage(urls[0][i], urls[1][i], urls[2][i])
 		);
 	}
 }
@@ -125,7 +163,7 @@ function danbooru(urls) {
 function yandere(urls) {
 	for (let i = 0; i < urls[0].length; i++) {
 		document.getElementById('content').append(
-			getImage(urls[0][i], urls[1][i])
+			getImage(urls[0][i], urls[1][i], urls[2][i])
 		);
 	}
 }
@@ -141,7 +179,7 @@ function konachan(urls) {
 	Promise.all(promises).then((values) => {
 		for (let i = 0; i < values.length; i++) {
 			document.getElementById('content').append(
-				getImage(values[i].posts[0]['sample_url'], urls[1][i])
+				getImage(values[i].posts[0]['sample_url'], urls[1][i], urls[2][i])
 			);
 		}
 	});
