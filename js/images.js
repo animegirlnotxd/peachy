@@ -107,9 +107,6 @@ function getImage(url, post, id) {
 		overlay.setAttribute('id', id);
 		overlay.appendChild(video2);
 
-		const open = document.createTextNode("open");
-		a.appendChild(open);
-
 		const article = document.createElement('article');
 		article.appendChild(underlay);
 		article.appendChild(overlay);
@@ -144,10 +141,6 @@ function getImage(url, post, id) {
 		overlay.setAttribute('class', "overlay");
 		overlay.setAttribute('id', id);
 		overlay.appendChild(img2);
-
-		const open = document.createTextNode("open");
-		
-		a.appendChild(open);
 
 		const article = document.createElement('article');
 		article.appendChild(underlay);

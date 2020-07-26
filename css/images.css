@@ -27,6 +27,7 @@ a {
 
 */
 header {
+  display: inline-block;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -79,6 +80,7 @@ nav {
 }
 
 #content article #open {
+  background-image: url("../img/external.svg");
   position: absolute;
   top: 0;
   right: 0;

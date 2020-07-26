@@ -15,10 +15,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, respond) {
 });
 
 function danbooru() {
-    // VIDEOS          : data-large-file-url
-    // MEDIUM SIZED IMG: data-large-file-url
-    // FULL SIZED IMG  : data-file-url
-
     let articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
     
     const images = [];

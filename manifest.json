@@ -1,5 +1,5 @@
 {
-   "name": "Booru Gallery",
+   "name": "Peachy Booru Gallery",
    "version": "1.0.0",
    "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
    "manifest_version": 2,
@@ -20,7 +20,5 @@
    ],
    "background": {
       "scripts": ["js/background.js"]
-   },
-   
-  "web_accessible_resources": ["html/images.html"]
+   }
 }

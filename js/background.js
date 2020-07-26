@@ -21,9 +21,12 @@ function sendImages(tabId, response, tabTitle) {
 		alert("No Images Found");
     }
 	else {
-        chrome.tabs.create({url: chrome.extension.getURL('html/images.html')}, function(tab) {
-            chrome.tabs.executeScript(tab.id, {file:"js/images.js"}, function() {
-                chrome.tabs.sendMessage(tab.id, {urls: urls, tabTitle: tabTitle});
+        chrome.tabs.create({url: chrome.runtime.getURL('html/images.html')}, function(tab) {
+            chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+                if (tabId === tab.id && changeInfo.status == 'complete') {
+                    chrome.tabs.onUpdated.removeListener(listener);
+                    chrome.tabs.sendMessage(tab.id, {urls: urls, tabTitle: tabTitle});
+                }
             });
         });
     }
