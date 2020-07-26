@@ -31,6 +31,7 @@ header {
     display: inline-block;
     position: sticky;
     top: 0;
+    left: 100vw;
     z-index: 1;
 
     #slider {
@@ -43,7 +44,7 @@ header {
 nav {
     position: absolute;
     top: 0;
-    right: 10px;
+    left: 10px;
     background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
     text-align: center;
     padding: 3px 10px 3px 10px;

@@ -31,6 +31,7 @@ header {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  left: 100vw;
   z-index: 1;
 }
 
@@ -43,7 +44,7 @@ header #slider {
 nav {
   position: absolute;
   top: 0;
-  right: 10px;
+  left: 10px;
   background-image: -webkit-gradient(linear, left top, right top, from(#b8cbb8), color-stop(0%, #b8cbb8), color-stop(0%, #b465da), color-stop(33%, #cf6cc9), color-stop(66%, #ee609c), to(#ee609c));
   background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
   text-align: center;
