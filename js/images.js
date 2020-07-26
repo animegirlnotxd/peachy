@@ -95,7 +95,10 @@ function getImage(url, post, id) {
 		a.setAttribute('target', "_blank");
 
 		const underlay = document.createElement('a');
-		underlay.setAttribute('href', `#${id}`);
+		underlay.setAttribute('data-href', `#${id}`);
+		underlay.addEventListener("click", e => {
+			window.location.href = underlay.dataset.href;
+		});
 		underlay.appendChild(video);
 		
 		const overlay = document.createElement('a');
