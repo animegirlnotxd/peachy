@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function(request) {
-		populateImagesPage(request.urls, request.tabTitle);
-		applyTitle(request.tabTitle);
+	populateImagesPage(request.urls, request.tabTitle);
+	applyTitle(request.tabTitle);
 });
 
 document.getElementById('column-count').addEventListener('input', updateValue);
@@ -96,7 +96,7 @@ function getImage(url, post, id) {
 
 		const underlay = document.createElement('a');
 		underlay.setAttribute('data-href', `#${id}`);
-		underlay.addEventListener("click", e => {
+		underlay.addEventListener('click', e => {
 			window.location.href = underlay.dataset.href;
 		});
 		underlay.appendChild(video);
