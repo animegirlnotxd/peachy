@@ -1,26 +1,27 @@
 {
-   "name": "Peachy Booru Gallery",
-   "version": "1.0.0",
-   "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
-   "manifest_version": 2,
-   "permissions": [
-      "contextMenus",
-      "tabs"
-  ],
-   "browser_action": {
-      "default_popup": "html/popup.html"
-   },
-   "content_scripts": [
-      {
-        "matches": [
-           "https://danbooru.donmai.us/*",
-           "https://yande.re/*",
-           "https://konachan.com/*"],
-        "js": ["js/content/content.js"]
-      }
-   ],
-   "background": {
-      "scripts": ["js/background/contextMenus.js", "js/background/background.js"],
-      "persistent": false
-   }
+    "manifest_version": 2,
+    "name": "Peachy Booru Gallery",
+    "version": "1.0.0",
+    "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
+    
+    "permissions": [
+        "contextMenus",
+        "tabs"
+    ],
+    "browser_action": {
+        "default_popup": "html/popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+            "https://danbooru.donmai.us/*",
+            "https://yande.re/*",
+            "https://konachan.com/*"],
+            "js": ["js/content/content.js"]
+        }
+    ],
+    "background": {
+        "scripts": ["js/background/contextMenus.js", "js/background/background.js"],
+        "persistent": false
+    }
 }
