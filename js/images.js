@@ -1,6 +1,8 @@
-chrome.runtime.onMessage.addListener(function(request) {
+chrome.runtime.onMessage.addListener(function listener (request) {
+    // needed, otherwise iamges get the images sent from the background scirpt get loaded in again...
+    chrome.runtime.onMessage.removeListener(listener);
 	populateImagesPage(request.urls, request.tabTitle);
-	applyTitle(request.tabTitle);
+    applyTitle(request.tabTitle);
 });
 
 document.getElementById('column-count').addEventListener('input', updateValue);
@@ -121,13 +123,18 @@ function getImage(url, post, id) {
 		const img2 = document.createElement('img');
 		img2.setAttribute('src', url);
 
-		const a = document.createElement('a');
-		a.setAttribute('href', post);
-		a.setAttribute('id', "open");
-		a.setAttribute('target', "_blank");
+		const postLink = document.createElement('a');
+		postLink.setAttribute('href', post);
+		postLink.setAttribute('id', "open");
+        postLink.setAttribute('target', "_blank");
+        
+        const favorite = document.createElement('a');
+		favorite.setAttribute('href', post);
+		favorite.setAttribute('id', "favorite");
+		favorite.setAttribute('target', "_blank");
 
 		const underlay = document.createElement('a');
-		underlay.setAttribute('data-href', `#${id}`);
+        underlay.setAttribute('data-href', `#${id}`);
 
 		// source: https://stackoverflow.com/a/63095737/13978779
 		underlay.addEventListener("click", e => {
@@ -145,7 +152,8 @@ function getImage(url, post, id) {
 		const article = document.createElement('article');
 		article.appendChild(underlay);
 		article.appendChild(overlay);
-		article.appendChild(a);
+        article.appendChild(postLink);
+        article.appendChild(favorite);
 
 		content = article;
 	}

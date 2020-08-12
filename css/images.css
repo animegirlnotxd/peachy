@@ -11,6 +11,7 @@
 body {
   background-color: #1F202C;
   width: calc(100% - 20px);
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -80,8 +81,7 @@ nav {
   outline: none;
 }
 
-#content article #open {
-  background-image: url("../img/external.svg");
+#content article #open, #content article #favorite {
   position: absolute;
   top: 0;
   right: 0;
@@ -93,7 +93,15 @@ nav {
   transition: opacity 0.3s;
 }
 
-#content article:hover #open {
+#content article #open {
+  background-image: url("../img/external.svg");
+}
+
+#content article #favorite {
+  right: 25px;
+}
+
+#content article:hover #open, #content article:hover #favorite {
   opacity: 1;
 }
 

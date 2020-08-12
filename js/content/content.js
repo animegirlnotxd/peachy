@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function(request, sender, respond) {	
 	if (request.action == "menuItemClicked") {
-        let tabTitle = request.tabTitle;
+        const tabTitle = request.tabTitle;
         
         if(tabTitle.includes("danbooru")) {
             respond({urls: danbooru()});
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, respond) {
 });
 
 function danbooru() {
-    let articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
+    const articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
     
     const images = [];
     const posts = [];
@@ -40,7 +40,7 @@ function yandere() {
     const anchors = document.querySelectorAll("a[class~='largeimg']");
     const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
 
-    for (let i = 0; i < anchors.length; i++) {
+    for (const i = 0; i < anchors.length; i++) {
         const id = lists[i].attributes["id"].value;
 
         images.push(anchors[i].attributes["href"].value);
