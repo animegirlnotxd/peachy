@@ -1,26 +1,26 @@
-chrome.runtime.onMessage.addListener(function(request, sender, respond) {	
-	if (request.action == "menuItemClicked") {
+chrome.runtime.onMessage.addListener(function (request, sender, respond) {
+    if (request.action == "menuItemClicked") {
         const tabTitle = request.tabTitle;
-        
-        if(tabTitle.includes("danbooru")) {
-            respond({urls: danbooru()});
+
+        if (tabTitle.includes("danbooru")) {
+            respond({ urls: danbooru() });
         }
         else if (tabTitle.includes("yande")) {
-            respond({urls: yandere()});
+            respond({ urls: yandere() });
         }
-        else if(tabTitle.includes("konachan")) {
-            respond({urls: konachan()});
+        else if (tabTitle.includes("konachan")) {
+            respond({ urls: konachan() });
         }
     }
 });
 
 function danbooru() {
     const articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
-    
+
     const images = [];
     const posts = [];
     const ids = [];
-    
+
     articles.forEach(article => {
         const id = article.attributes["data-id"].value;
 
@@ -40,7 +40,7 @@ function yandere() {
     const anchors = document.querySelectorAll("a[class~='largeimg']");
     const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
 
-    for (const i = 0; i < anchors.length; i++) {
+    for (let i = 0; i < anchors.length; i++) {
         const id = lists[i].attributes["id"].value;
 
         images.push(anchors[i].attributes["href"].value);
@@ -56,7 +56,7 @@ function konachan() {
     const apiLinks = [];
     const posts = [];
     const ids = [];
-    
+
     lists.forEach(list => {
         const id = list.attributes["id"].value.substr(1);
 

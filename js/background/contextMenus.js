@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
     const contextMenuOptions = {
         "id": "load",
         "title": "Load",
@@ -9,6 +9,6 @@ chrome.runtime.onInstalled.addListener(function() {
         ],
         "contexts": ["all"]
     };
-    
+
     chrome.contextMenus.create(contextMenuOptions);
 });

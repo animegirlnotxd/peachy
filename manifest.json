@@ -3,7 +3,6 @@
     "name": "Peachy Booru Gallery",
     "version": "1.0.0",
     "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
-    
     "permissions": [
         "contextMenus",
         "tabs"
@@ -11,17 +10,28 @@
     "browser_action": {
         "default_popup": "html/popup.html"
     },
+    "icons": {
+        "16": "img/peachy16.png",
+        "48": "img/peachy48.png",
+        "128": "img/peachy128.png"
+    },
     "content_scripts": [
         {
             "matches": [
-            "https://danbooru.donmai.us/*",
-            "https://yande.re/*",
-            "https://konachan.com/*"],
-            "js": ["js/content/content.js"]
+                "https://danbooru.donmai.us/*",
+                "https://yande.re/*",
+                "https://konachan.com/*"
+            ],
+            "js": [
+                "js/content/content.js"
+            ]
         }
     ],
     "background": {
-        "scripts": ["js/background/contextMenus.js", "js/background/background.js"],
+        "scripts": [
+            "js/background/contextMenus.js",
+            "js/background/background.js"
+        ],
         "persistent": false
     }
 }

@@ -1,6 +1,6 @@
-window.onload=function() {
-    document.getElementById('back').addEventListener('click', goBack);    
-    document.getElementById('logo').addEventListener('click', function(e) {
+window.onload = function () {
+    document.getElementById('back').addEventListener('click', goBack);
+    document.getElementById('logo').addEventListener('click', function (e) {
         if (e.ctrlKey) {
             openWebsites();
         }
@@ -13,7 +13,7 @@ window.onload=function() {
 let urls;
 let isCorrectPassword = false;
 
-if(localStorage["urls"] != undefined) {
+if (localStorage["urls"] != undefined) {
     urls = localStorage.getItem("urls").split(',');
 }
 else {
@@ -34,14 +34,13 @@ document.getElementById('amountOfSites').innerHTML = `${urls.length} sites`;
 function openWebsites() {
     for (let i = 0; i < urls.length; i++) {
         let url = urls[i];
-        if (url !== '')
-        {
+        if (url !== '') {
             chrome.tabs.create({
                 url: url,
                 active: false
             });
         }
-    }  
+    }
 }
 
 function loadSitesIntoTextarea() {
