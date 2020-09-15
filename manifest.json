@@ -8,12 +8,12 @@
         "tabs"
     ],
     "browser_action": {
-        "default_popup": "html/popup.html"
+        "default_popup": "src/html/popup.html"
     },
     "icons": {
-        "16": "img/peachy16.png",
-        "48": "img/peachy48.png",
-        "128": "img/peachy128.png"
+        "16": "src/img/peachy16.png",
+        "48": "src/img/peachy48.png",
+        "128": "src/img/peachy128.png"
     },
     "content_scripts": [
         {
@@ -23,15 +23,15 @@
                 "https://konachan.com/*"
             ],
             "js": [
-                "js/content/content.js"
+                "src/js/content/index.js"
             ]
         }
     ],
     "background": {
-        "scripts": [
-            "js/background/contextMenus.js",
-            "js/background/background.js"
-        ],
+        "page": "src/html/background/background.html",
         "persistent": false
-    }
+    },
+    "web_accessible_resources": [
+        "src/js/*"
+    ]
 }

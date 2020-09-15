@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(function listener(request) {
-    // needed, otherwise iamges get the images sent from the background scirpt get loaded in again...
+    // needed, otherwise images sent from the background script get loaded in again...
     chrome.runtime.onMessage.removeListener(listener);
-    populateImagesPage(request.urls, request.tabTitle);
+    populateImagesPage(request.collections.collections, request.tabTitle);
     applyTitle(request.tabTitle);
 });
 
@@ -24,18 +24,21 @@ function updateValue(e) {
     document.getElementById("content").style.columnCount = value;
 }
 
-function populateImagesPage(urls, tabTitle) {
-    document.getElementById('image-count').innerText = urls[0].length + " images ";
+function populateImagesPage(collections, tabTitle) {
+    // console.log(collections);
+    const amount = collections.imageCollection._ids.length + collections.videoCollection._ids.length;
+
+    document.getElementById('image-count').innerText = amount + " images / videos ";
 
     switch (determineSite(tabTitle)) {
         case "danbooru":
-            danbooru(urls);
+            danbooru(collections);
             break;
         case "yandere":
-            yandere(urls);
+            yandere(collections);
             break;
         case "konachan":
-            konachan(urls);
+            konachan(collections);
             break;
         default:
             break;
@@ -68,11 +71,13 @@ function applyTitle(tabTitle) {
 
 
 
-function danbooru(urls) {
-    console.log(urls);
-    for (let i = 0; i < urls[0].length; i++) {
+function danbooru(collections) {
+    // console.log(collections);
+    for (let i = 0; i < collections.imageCollection._ids.length; i++) {
         document.getElementById('content').append(
-            createNode(urls[0][i], urls[1][i], urls[2][i])
+            createNode(collections.imageCollection._imageLinks[i],
+                collections.imageCollection._posts[i],
+                collections.imageCollection._ids[i])
         );
     }
 }
