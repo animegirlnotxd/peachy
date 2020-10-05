@@ -1,105 +1,91 @@
-import ImageCollection from "../models/media/ImageCollection.js";
-import ImageHTTP from '../models/media/ImageHTTPCollection.js';
-import VideoCollection from "../models/media/VideoCollection.js";
-// import User from '../models/User.js';
-
-// import Medium from "../models/media/Medium";
+import Video from "../models/media/Video.js";
+import Image from "../models/media/Image.js";
+import VisualCollection from "../models/media/VisualCollection.js";
 
 export function main() {
     chrome.runtime.onMessage.addListener(function (request, sender, respond) {
-        if (request.action == "menuItemClicked") {
+        if (request.action === "menuItemClicked") {
             const tabTitle = request.tabTitle;
 
             if (tabTitle.includes("danbooru")) {
-                respond({ collections: danbooru() });
+                respond({ collection: danbooru() });
             }
             else if (tabTitle.includes("yande")) {
-                respond({ collections: yandere() });
+                respond({ collection: yandere() });
             }
             else if (tabTitle.includes("konachan")) {
-                respond({ collections: konachan() });
+                respond({ collection: konachan() });
             }
         }
     });
 
+
+
     function danbooru() {
+        const visualCollection = new VisualCollection();
         const articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
-        const imageCollection = new ImageCollection(false);
-        const videoCollection = new VideoCollection(false);
 
         articles.forEach(article => {
-            let urlExtension = article.attributes["data-large-file-url"].value.split('.').pop();
+            const extension = article.attributes["data-large-file-url"].value.split('.').pop();
             const id = article.attributes["data-id"].value;
+            const link = article.attributes["data-large-file-url"].value;
+            const post = `https://danbooru.donmai.us/posts/${id}`;
 
-            if ((urlExtension == "mp4") || (urlExtension == "webm")) {
+            if ((extension === "mp4") || (extension === "webm")) {
                 // video
-                videoCollection.addVideoLink(article.attributes["data-large-file-url"].value);
-                videoCollection.addPost(`https://danbooru.donmai.us/posts/${id}`);
-                videoCollection.addId(id);
+                const video = new Video(link, id, post, false);
+                visualCollection.addVisual(video);
             }
             else {
                 // image
-                imageCollection.addimageLink(article.attributes["data-large-file-url"].value);
-                imageCollection.addPost(`https://danbooru.donmai.us/posts/${id}`);
-                imageCollection.addId(id);
+                const image = new Image(link, id, post, false);
+                visualCollection.addVisual(image);
             }
         });
 
-        return {
-            imageCollection: imageCollection,
-            videoCollection: videoCollection
-        };
+        return visualCollection;
     }
 
     function yandere() {
-        const images = [];
-        const posts = [];
-        const ids = [];
-
+        const visualCollection = new VisualCollection();
         const anchors = document.querySelectorAll("a[class~='largeimg']");
         const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
 
         for (let i = 0; i < anchors.length; i++) {
+            const extension = anchors[i].attributes["href"].value.split('.').pop();
             const id = lists[i].attributes["id"].value;
+            const link = anchors[i].attributes["href"].value;
+            const post = `https://yande.re/post/show/${id.substr(1)}`;
 
-            images.push(anchors[i].attributes["href"].value);
-            posts.push(`https://yande.re/post/show/${id.substr(1)}`);
-            ids.push(id);
+            if ((extension === "mp4") || (extension === "webm")) {
+                // video
+                const video = new Video(link, id, post, false);
+                visualCollection.addVisual(video);
+            }
+            else {
+                // image
+                const image = new Image(link, id, post, false);
+                visualCollection.addVisual(image);
+            }
         }
 
-        return [images, posts, ids];
+        return visualCollection;
     }
 
     function konachan() {
+        const visualCollection = new VisualCollection();
         const lists = document.querySelectorAll("li[id^='p']:not([class*='hide'])");
-        const apiLinks = [];
-        const posts = [];
-        const ids = [];
 
         lists.forEach(list => {
             const id = list.attributes["id"].value.substr(1);
+            const link = `https://konachan.com/post.json?tags=id:${id}&api_version=2`;
+            const post = `https://konachan.com/post/show/${id}`;
 
-            apiLinks.push(`https://konachan.com/post.json?tags=id:${id}&api_version=2`);
-            posts.push(`https://konachan.com/post/show/${id}`);
-            ids.push(id);
+            const image = new Image(link, id, post, false);
+            visualCollection.addVisual(image);
         });
 
-        return [apiLinks, posts, ids];
+        return visualCollection;
     }
-
-    // const user = User.new({ name: 'otiai20' });
-    // console.log(user.greet());
-    // console.log(
-    //     "Is chrome.runtime available here?",
-    //     typeof chrome.runtime.sendMessage == "function"
-    // );
-
-    const imageCollection = new ImageCollection();
-    imageCollection.addId(1337);
-    // console.log(image.ids[0]);
-    console.log(imageCollection.getIds()[0]);
-
-    // const mediaum = new Medium();
-
 }
 
