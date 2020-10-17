@@ -1,5 +1,5 @@
-import Video from "../models/media/Video.js";
 import Image from "../models/media/Image.js";
+import Video from "../models/media/Video.js";
 import VisualCollection from "../models/media/VisualCollection.js";
 
 export function main() {
@@ -19,8 +19,6 @@ export function main() {
         }
     });
 
-
-
     function danbooru() {
         const visualCollection = new VisualCollection();
         const articles = document.querySelectorAll("article:not([class*='blacklisted-active'])");
@@ -28,7 +26,13 @@ export function main() {
         articles.forEach(article => {
             const extension = article.attributes["data-large-file-url"].value.split('.').pop();
             const id = article.attributes["data-id"].value;
+
+            // medium size
             const link = article.attributes["data-large-file-url"].value;
+
+            // large size
+            const linkLarge = article.attributes["data-file-url"].value;
+
             const post = `https://danbooru.donmai.us/posts/${id}`;
 
             if ((extension === "mp4") || (extension === "webm")) {
@@ -38,10 +42,14 @@ export function main() {
             }
             else {
                 // image
-                const image = new Image(link, id, post, false);
+                const image = new Image(link, linkLarge, id, post, false);
                 visualCollection.addVisual(image);
             }
         });
+
+        console.log(visualCollection);
+        console.log(typeof visualCollection);
+        console.log(visualCollection instanceof Error);
 
         return visualCollection;
     }

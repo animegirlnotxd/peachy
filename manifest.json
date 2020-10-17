@@ -5,7 +5,8 @@
     "description": "Open a page's posts in a new tab for easy viewing. Supported sites are Danbooru, Yande.re & Konachan.",
     "permissions": [
         "contextMenus",
-        "tabs"
+        "tabs",
+        "downloads"
     ],
     "browser_action": {
         "default_popup": "src/html/popup.html"

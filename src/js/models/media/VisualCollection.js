@@ -1,9 +1,9 @@
 import Image from "./Image.js"
 
 export default class VisualCollection {
-    constructor() {
-        this._images = [];
-        this._videos = [];
+    constructor(images = [], videos = []) {
+        this._images = images;
+        this._videos = videos;
     }
 
     addVisual(visual) {

@@ -1,3 +1,5 @@
+import VisualCollection from "../models/media/VisualCollection.js";
+
 const openedTabs = {};
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
@@ -6,7 +8,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             tab.id,
             { action: 'menuItemClicked', tabTitle: tab.title.toLowerCase() },
             response => {
-                sendcollection(response, tab.title.toLowerCase());
+                sendCollection(response, tab.title.toLowerCase());
             });
     }
 });
@@ -23,14 +25,19 @@ chrome.tabs.onRemoved.addListener(tabId => {
     delete openedTabs[tabId];
 });
 
-function sendcollection(response, tabTitle) {
-    if ((response.collection._images.length === 0) && (response.collection._videos.length === 0)) {
+function sendCollection(response, tabTitle) {
+    const images = response.collection._images;
+    const videos = response.collection._videos;
+
+    const visualCollection = new VisualCollection(images, videos);
+
+    if ((visualCollection.getImages().length === 0) && (visualCollection.getVideos().length === 0)) {
         alert("No images or videos found.");
     }
     else {
-        chrome.tabs.create({ url: chrome.runtime.getURL('src/html/images.html') }, tab => {
+        chrome.tabs.create({ url: chrome.runtime.getURL('src/html/images.html'), active: false }, tab => {
             openedTabs[tab.id] = () => {
-                chrome.tabs.sendMessage(tab.id, { collection: response.collection, tabTitle: tabTitle });
+                chrome.tabs.sendMessage(tab.id, { collection: visualCollection, tabTitle: tabTitle });
             }
         });
     }

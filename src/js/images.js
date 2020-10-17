@@ -1,22 +1,19 @@
-chrome.runtime.onMessage.addListener(function listener(request) {
-    // needed, otherwise images sent from the background script get loaded in again...
-    chrome.runtime.onMessage.removeListener(listener);
-    populateImagesPage(request.collection, request.tabTitle);
-    applyTitle(request.tabTitle);
-});
+chrome.runtime.onMessage.addListener(
+    function listener(request) {
 
-document.getElementById('column-count').addEventListener('input', updateValue);
-window.addEventListener('DOMContentLoaded', () => {
-    /*
-    if(urls == undefined) {
-        $("#info").html("Either this page wasn't opened through the normal use of the extension;<br>or a window reload occured and it cleared the fetched images.");
-        $("#info").css({
-            "border-left": "2px solid #FFB818"
+        // needed, otherwise images sent from the background script get loaded in again...
+        chrome.runtime.onMessage.removeListener(listener);
+
+        populateImagesPage(request.collection, request.tabTitle);
+        applyTitle(request.tabTitle);
+        document.getElementById('download-all').addEventListener('click', () => {
+            downloadAll(request.collection);
         });
-    }*/
-});
+    });
 
-function updateValue(e) {
+document.getElementById('column-count').addEventListener('input', updateColumnCounter);
+
+function updateColumnCounter(e) {
     const value = e.target.value;
     const columnCountOutput = document.getElementById('column-count-output');
 
@@ -25,8 +22,11 @@ function updateValue(e) {
 }
 
 function populateImagesPage(collection, tabTitle) {
+    const websiteTitle = determineSite(tabTitle);
+
     const imageCount = collection._images.length;
     const videoCount = collection._videos.length;
+    document.getElementById('visual-website').innerText = websiteTitle;
     document.getElementById('visual-count').innerText = `${imageCount} images & ${videoCount} videos`;
 
     switch (determineSite(tabTitle)) {
@@ -73,7 +73,9 @@ function danbooru(collection) {
         const image = collection._images[i];
         if (image) {
             document.getElementById('content').append(
-                createImageElement(image._image,
+                createImageElement(
+                    image._image,
+                    image._imageLarge,
                     image._post,
                     image._id)
             );
@@ -84,7 +86,8 @@ function danbooru(collection) {
         const video = collection._videos[i];
         if (video) {
             document.getElementById('content').append(
-                createVideoElement(video._video,
+                createVideoElement(
+                    video._video,
                     video._post,
                     video._id)
             );
@@ -133,6 +136,84 @@ function konachan(collection) {
     });
 }
 
+// TODO: add check if all got downloaded
+function downloadAll(collection) {
+    const PREFER_LARGE_IMAGES = true;
+    const images = collection._images;
+    // const videos = collection._videos;
+
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+
+    today = `${dd}-${mm}-${yyyy}`;
+
+    images.forEach(image => {
+        const url = PREFER_LARGE_IMAGES ? image._imageLarge : image._image;
+        const indexLastSlash = url.lastIndexOf('/');
+        const file = url.substring(indexLastSlash + 1);
+        const filename = PREFER_LARGE_IMAGES ? `${today}-HD/${file}` : `${today}/HD-${file}`;
+
+        chrome.downloads.download({
+            url: url,
+            filename: filename,
+            conflictAction: 'uniquify'
+        }, downloadId => {
+            if (downloadId) {
+                // success
+                console.log(`Started downloading: ${downloadId}`);
+            }
+            else {
+                // error
+                console.log(`Download failed`);
+            }
+        });
+    });
+}
+
+function createImageElement(link, linkLarge, post, id) {
+    const img = document.createElement('img');
+    img.setAttribute('src', link);
+
+    const img2 = document.createElement('img');
+    img2.setAttribute('src', linkLarge);
+
+    const postLink = document.createElement('a');
+    postLink.setAttribute('href', post);
+    postLink.setAttribute('id', "open");
+    postLink.setAttribute('target', "_blank");
+
+    const favorite = document.createElement('a');
+    favorite.setAttribute('href', post);
+    favorite.setAttribute('id', "favorite");
+    favorite.setAttribute('target', "_blank");
+
+    const underlay = document.createElement('a');
+    underlay.setAttribute('data-href', `#${id}`);
+
+    // source: https://stackoverflow.com/a/63095737/13978779
+    underlay.addEventListener("click", e => {
+        window.location.href = underlay.dataset.href;
+    });
+
+    underlay.appendChild(img);
+
+    const overlay = document.createElement('a');
+    overlay.setAttribute('href', "#_");
+    overlay.setAttribute('class', "overlay");
+    overlay.setAttribute('id', id);
+    overlay.appendChild(img2);
+
+    const article = document.createElement('article');
+    article.appendChild(underlay);
+    article.appendChild(overlay);
+    article.appendChild(postLink);
+    article.appendChild(favorite);
+
+    return article;
+}
+
 function createVideoElement(link, post, id) {
     const video = document.createElement('video');
     video.controls = true;
@@ -179,44 +260,3 @@ function createVideoElement(link, post, id) {
     return article;
 }
 
-function createImageElement(link, post, id) {
-    const img = document.createElement('img');
-    img.setAttribute('src', link);
-
-    const img2 = document.createElement('img');
-    img2.setAttribute('src', link);
-
-    const postLink = document.createElement('a');
-    postLink.setAttribute('href', post);
-    postLink.setAttribute('id', "open");
-    postLink.setAttribute('target', "_blank");
-
-    const favorite = document.createElement('a');
-    favorite.setAttribute('href', post);
-    favorite.setAttribute('id', "favorite");
-    favorite.setAttribute('target', "_blank");
-
-    const underlay = document.createElement('a');
-    underlay.setAttribute('data-href', `#${id}`);
-
-    // source: https://stackoverflow.com/a/63095737/13978779
-    underlay.addEventListener("click", e => {
-        window.location.href = underlay.dataset.href;
-    });
-
-    underlay.appendChild(img);
-
-    const overlay = document.createElement('a');
-    overlay.setAttribute('href', "#_");
-    overlay.setAttribute('class', "overlay");
-    overlay.setAttribute('id', id);
-    overlay.appendChild(img2);
-
-    const article = document.createElement('article');
-    article.appendChild(underlay);
-    article.appendChild(overlay);
-    article.appendChild(postLink);
-    article.appendChild(favorite);
-
-    return article;
-}
